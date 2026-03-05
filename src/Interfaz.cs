@@ -22,10 +22,14 @@ namespace SistemaSenator.interfaz
 
                 switch (opcion)
                 {
-                    case "1": Reservar(); break;
-                    case "2": Cancelar(); break;
-                    case "3": MostrarDisponibilidad(); break;
-                    case "4": Reporte(); break;
+                    case "1": Reservar(); 
+                    break;
+                    case "2": Cancelar(); 
+                    break;
+                    case "3": MostrarDisponibilidad(); 
+                    break;
+                    case "4": Reporte(); 
+                    break;
                 }
             }
         }

@@ -1,7 +1,7 @@
 using System;
 using SistemaSenator.Data;
 
-namespace SistemaSenator.Reservas;
+namespace SistemaSenator.Reservas
 {
     public static class Negocio
     {

@@ -12,3 +12,4 @@ C:\Users\enrri\Documents\Tareas_del_itla\Mini_Proyecto_Senator\obj\Debug\net10.0
 C:\Users\enrri\Documents\Tareas_del_itla\Mini_Proyecto_Senator\obj\Debug\net10.0\Mini_Proyecto_Senator.pdb
 C:\Users\enrri\Documents\Tareas_del_itla\Mini_Proyecto_Senator\obj\Debug\net10.0\Mini_Proyecto_Senator.genruntimeconfig.cache
 C:\Users\enrri\Documents\Tareas_del_itla\Mini_Proyecto_Senator\obj\Debug\net10.0\ref\Mini_Proyecto_Senator.dll
+C:\Users\enrri\Documents\Tareas_del_itla\Mini_Proyecto_Senator\obj\Debug\net10.0\Mini_Proyecto_Senator.sourcelink.json
