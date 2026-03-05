@@ -1,6 +1,6 @@
 using System;
 using SistemaSenator.Data;
-using SistemaSenator.Business;
+using SistemaSenator.Reservas;
 
 namespace SistemaSenator.interfaz
 {
