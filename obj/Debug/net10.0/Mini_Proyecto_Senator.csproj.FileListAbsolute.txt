@@ -1,0 +1,14 @@
+C:\Users\enrri\Documents\Tareas_del_itla\Mini_Proyecto_Senator\bin\Debug\net10.0\Mini_Proyecto_Senator.exe
+C:\Users\enrri\Documents\Tareas_del_itla\Mini_Proyecto_Senator\bin\Debug\net10.0\Mini_Proyecto_Senator.deps.json
+C:\Users\enrri\Documents\Tareas_del_itla\Mini_Proyecto_Senator\bin\Debug\net10.0\Mini_Proyecto_Senator.runtimeconfig.json
+C:\Users\enrri\Documents\Tareas_del_itla\Mini_Proyecto_Senator\bin\Debug\net10.0\Mini_Proyecto_Senator.dll
+C:\Users\enrri\Documents\Tareas_del_itla\Mini_Proyecto_Senator\bin\Debug\net10.0\Mini_Proyecto_Senator.pdb
+C:\Users\enrri\Documents\Tareas_del_itla\Mini_Proyecto_Senator\obj\Debug\net10.0\Mini_Proyecto_Senator.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\enrri\Documents\Tareas_del_itla\Mini_Proyecto_Senator\obj\Debug\net10.0\Mini_Proyecto_Senator.AssemblyInfoInputs.cache
+C:\Users\enrri\Documents\Tareas_del_itla\Mini_Proyecto_Senator\obj\Debug\net10.0\Mini_Proyecto_Senator.AssemblyInfo.cs
+C:\Users\enrri\Documents\Tareas_del_itla\Mini_Proyecto_Senator\obj\Debug\net10.0\Mini_Proyecto_Senator.csproj.CoreCompileInputs.cache
+C:\Users\enrri\Documents\Tareas_del_itla\Mini_Proyecto_Senator\obj\Debug\net10.0\Mini_Proyecto_Senator.dll
+C:\Users\enrri\Documents\Tareas_del_itla\Mini_Proyecto_Senator\obj\Debug\net10.0\refint\Mini_Proyecto_Senator.dll
+C:\Users\enrri\Documents\Tareas_del_itla\Mini_Proyecto_Senator\obj\Debug\net10.0\Mini_Proyecto_Senator.pdb
+C:\Users\enrri\Documents\Tareas_del_itla\Mini_Proyecto_Senator\obj\Debug\net10.0\Mini_Proyecto_Senator.genruntimeconfig.cache
+C:\Users\enrri\Documents\Tareas_del_itla\Mini_Proyecto_Senator\obj\Debug\net10.0\ref\Mini_Proyecto_Senator.dll
