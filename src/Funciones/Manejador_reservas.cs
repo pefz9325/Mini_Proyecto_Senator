@@ -1,52 +1,42 @@
-using System;
 using SistemaSenator.Data;
 
 namespace SistemaSenator.Reservas
 {
-    public static class Negocio
+    public static class Motor
     {
-        // Cuenta cuántos grupos hay registrados para un restaurante y hora específica
-        public static int ContarGrupos(string restaurante, string horario)
+        public static int ContarOcupados(string res, string hora)
         {
-            int contador = 0;
-            foreach (var r in Database.ListaReservas)
+            int cuenta = 0;
+            for (int i = 0; i < Almacen.ResAsignados.Count; i++)
             {
-                if (r.Restaurante == restaurante && r.Horario == horario)
-                    contador++;
-            }
-            return contador;
-        }
-
-        public static bool HayCupo(int indexRestaurante, string horario)
-        {
-            int ocupados = ContarGrupos(Database.Restaurantes[indexRestaurante], horario);
-            return ocupados < Database.Capacidades[indexRestaurante];
-        }
-
-        public static string LimpiarNombre(string nombre)
-        {
-            // Quita espacios y normaliza a mayúsculas
-            return nombre.Trim().ToUpper();
-        }
-
-        public static bool EliminarReserva(string nombre)
-        {
-            string nombreLimpio = LimpiarNombre(nombre);
-            Reservacion reservaEncontrada = null;
-
-            foreach (var r in Database.ListaReservas)
-            {
-                if (r.Cliente == nombreLimpio)
+                if (Almacen.ResAsignados[i] == res && Almacen.HorasAsignadas[i] == hora)
                 {
-                    reservaEncontrada = r;
-                    break;
+                    cuenta++;
                 }
             }
+            return cuenta;
+        }
 
-            if (reservaEncontrada != null)
+        public static string ObtenerPrimerNombre(string nombreCompleto)
+        {
+            // Uso de Split para separar el nombre
+            string[] partes = nombreCompleto.Trim().Split(' ');
+            return partes[0].ToUpper();
+        }
+
+        public static bool Eliminar(string nombre)
+        {
+            string busca = nombre.Trim().ToUpper();
+            for (int i = 0; i < Almacen.NombresClientes.Count; i++)
             {
-                Database.ListaReservas.Remove(reservaEncontrada);
-                return true;
+                if (Almacen.NombresClientes[i] == busca)
+                {
+                    Almacen.NombresClientes.RemoveAt(i);
+                    Almacen.ResAsignados.RemoveAt(i);
+                    Almacen.HorasAsignadas.RemoveAt(i);
+                    Almacen.FechasRegistro.RemoveAt(i);
+                    return true;
+                }
             }
             return false;
         }

@@ -1,14 +1,13 @@
-﻿using System;
-using SistemaSenator.interfaz;
+﻿using SistemaSenator.Visual;
 
 namespace SistemaSenator
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main(  )
         {
             // Iniciamos la interfaz
-            MenuPrincipal.MostrarMenu();
+            Menu.Iniciar();
         }
     }
 }

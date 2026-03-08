@@ -1,95 +1,89 @@
-using System;
 using SistemaSenator.Data;
 using SistemaSenator.Reservas;
 
-namespace SistemaSenator.interfaz
+namespace SistemaSenator.Visual
 {
-    public static class MenuPrincipal
+    public static class Menu
     {
-        public static void MostrarMenu()
+        public static void Iniciar()
         {
             string opcion = "";
-            while (opcion != "5")
+            do
             {
-                Console.WriteLine("\n--- SISTEMA DE RESERVAS SENATOR ---");
-                Console.WriteLine("1. Realizar Reservación");
-                Console.WriteLine("2. Eliminar Reserva");
-                Console.WriteLine("3. Ver Disponibilidad");
-                Console.WriteLine("4. Imprimir Listado");
-                Console.WriteLine("5. Salir");
+                Console.WriteLine("\n========================================");
+                Console.WriteLine($"   SENATOR SYSTEM | {DateTime.Now:D}");
+                Console.WriteLine("========================================");
+                Console.WriteLine("1. Reservar\n2. Cancelar\n3. Ver Disponibilidad\n4. Reporte\n5. Salir");
                 Console.Write("Seleccione: ");
                 opcion = Console.ReadLine();
 
                 switch (opcion)
                 {
-                    case "1": Reservar(); 
-                    break;
-                    case "2": Cancelar(); 
-                    break;
-                    case "3": MostrarDisponibilidad(); 
-                    break;
-                    case "4": Reporte(); 
-                    break;
+                    case "1": NuevaReserva(); break;
+                    case "2": Cancelar(); break;
+                    case "3": MostrarCupos(); break;
+                    case "4": VerReporte(); break;
                 }
+            } while (opcion != "5");
+        }
+
+        static void NuevaReserva()
+        {
+            try
+            {
+                Console.Write("Nombre del Cliente: ");
+                string nombre = Console.ReadLine().Trim().ToUpper();
+
+                Console.WriteLine("Restaurante (1:Ember, 2:Zao, 3:Grappa, 4:Larimar):");
+                int rPos = int.Parse(Console.ReadLine())-1;
+
+                Console.WriteLine("Horario (1: 6-8PM, 2: 8-10PM):");
+                int hPos = int.Parse(Console.ReadLine())-1;
+
+                string res = Almacen.Restaurantes[rPos];
+                string hor = Almacen.Horarios[hPos];
+
+                if (Motor.ContarOcupados(res, hor) < Almacen.Capacidades[rPos])
+                {
+                    Almacen.NombresClientes.Add(nombre);
+                    Almacen.ResAsignados.Add(res);
+                    Almacen.HorasAsignadas.Add(hor);
+                    Almacen.FechasRegistro.Add(DateTime.Now);
+                    Console.WriteLine($"\nÉxito: {Motor.ObtenerPrimerNombre(nombre)} registrado a las {DateTime.Now:t}");
+                }
+                else Console.WriteLine("\nSin cupo.");
+            }
+            catch (Exception) { Console.WriteLine("\nError: Use números para las opciones."); }
+        }
+
+        static void MostrarCupos()
+        {
+            Console.WriteLine("\n--- DISPONIBILIDAD ---");
+            int i = 0;
+            while (i < Almacen.Restaurantes.Length)
+            {
+                int c1 = Motor.ContarOcupados(Almacen.Restaurantes[i], Almacen.Horarios[0]);
+                int c2 = Motor.ContarOcupados(Almacen.Restaurantes[i], Almacen.Horarios[1]);
+                Console.WriteLine($"{Almacen.Restaurantes[i],-10} | 6PM: {Almacen.Capacidades[i]-c1} | 8PM: {Almacen.Capacidades[i]-c2}");
+                i++;
             }
         }
 
-        static void Reservar()
+        static void VerReporte()
         {
-            Console.Write("Nombre del cliente: ");
-            string nombre = Negocio.LimpiarNombre(Console.ReadLine());
-
-            Console.WriteLine("Seleccione Restaurante: 1.Ember, 2.Zao, 3.Grappa, 4.Larimar");
-            int resIdx = int.Parse(Console.ReadLine())-1;
-
-            Console.WriteLine("Seleccione Horario: 1. 6-8PM, 2. 8-10PM");
-            int horIdx = int.Parse(Console.ReadLine())-1;
-            string horarioSelec = Database.Horarios[horIdx];
-
-            if (Negocio.HayCupo(resIdx, horarioSelec))
+            Console.WriteLine("\n--- LISTADO ---");
+            foreach (string n in Almacen.NombresClientes)
             {
-                Reservacion nueva = new Reservacion();
-                nueva.Cliente = nombre;
-                nueva.Restaurante = Database.Restaurantes[resIdx];
-                nueva.Horario = horarioSelec;
-                Database.ListaReservas.Add(nueva);
-                Console.WriteLine("Reservación confirmada.");
-            }
-            else
-            {
-                Console.WriteLine("¡FULL! No hay cupo en este horario.");
+                int idx = Almacen.NombresClientes.IndexOf(n);
+                Console.WriteLine($"{idx+1}. {n,-20} | {Almacen.ResAsignados[idx]} | {Almacen.FechasRegistro[idx]:g}");
             }
         }
 
         static void Cancelar()
         {
-            Console.Write("Nombre del cliente a eliminar: ");
-            string nombre = Console.ReadLine();
-            if (Negocio.EliminarReserva(nombre)) Console.WriteLine("Reserva eliminada.");
-            else Console.WriteLine("No se encontró el cliente.");
-        }
-
-        static void MostrarDisponibilidad()
-        {
-            Console.WriteLine("\n--- DISPONIBILIDAD ACTUAL ---");
-            for (int i = 0; i < Database.Restaurantes.Length; i++)
-            {
-                foreach (var h in Database.Horarios)
-                {
-                    int ocupados = Negocio.ContarGrupos(Database.Restaurantes[i], h);
-                    int libres = Database.Capacidades[i] - ocupados;
-                    Console.WriteLine($"{Database.Restaurantes[i]} ({h}): {libres} cupos libres.");
-                }
-            }
-        }
-
-        static void Reporte()
-        {
-            Console.WriteLine("\n--- LISTADO DE RESERVACIONES ---");
-            foreach (var r in Database.ListaReservas)
-            {
-                Console.WriteLine($"Cliente: {r.Cliente} | Rest: {r.Restaurante} | Hora: {r.Horario}");
-            }
+            Console.Write("Nombre a borrar: ");
+            if (Motor.Eliminar(Console.ReadLine())) Console.WriteLine("Borrado.");
+            else Console.WriteLine("No encontrado.");
         }
     }
 }

@@ -1,24 +1,18 @@
-using System;
 using System.Collections.Generic;
 
 namespace SistemaSenator.Data
 {
-    public class Reservacion
+    public static class Almacen
     {
-        public string Cliente;
-        public string Restaurante;
-        public string Horario;
-        public int CantidadPersonas;
-    }
-
-    public static class Database
-    {
-        // Listado global de reservaciones lista
-        public static List<Reservacion> ListaReservas = new List<Reservacion>();
-
-        // Catálogo de Restaurantes y sus capacidades máximas por array
+        // Datos fijos del hotel
         public static string[] Restaurantes = { "Ember", "Zao", "Grappa", "Larimar" };
-        public static int[] Capacidades = { 3, 4, 2, 3 }; // Grupos por hora
-        public static string[] Horarios = { "6:00 PM - 8:00 PM", "8:00 PM - 10:00 PM" };
+        public static int[] Capacidades = { 3, 4, 2, 3 };
+        public static string[] Horarios = { "6:00 PM a 8:00 PM", "8:00 PM a 10:00 PM" };
+
+        // Listas paralelas para manejar las reservas, vistas y eliminacion
+        public static List<string> NombresClientes = new List<string>();
+        public static List<string> ResAsignados = new List<string>();
+        public static List<string> HorasAsignadas = new List<string>();
+        public static List<DateTime> FechasRegistro = new List<DateTime>();
     }
 }
