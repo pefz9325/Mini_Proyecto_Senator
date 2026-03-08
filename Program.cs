@@ -4,9 +4,8 @@ namespace SistemaSenator
 {
     class Program
     {
-        static void Main(  )
+        static void Main()
         {
-            // Iniciamos la interfaz
             Menu.Iniciar();
         }
     }

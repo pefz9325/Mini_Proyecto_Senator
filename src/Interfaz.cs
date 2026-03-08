@@ -1,5 +1,5 @@
 using SistemaSenator.Data;
-using SistemaSenator.Reservas;
+using tiendita.logica;
 
 namespace SistemaSenator.Visual
 {
@@ -8,85 +8,101 @@ namespace SistemaSenator.Visual
         public static void Iniciar()
         {
             string opcion = "";
+            // Uso de do-while para el ciclo del menú
             do
             {
-                Console.WriteLine("\n========================================");
-                Console.WriteLine($"   SENATOR SYSTEM | {DateTime.Now:D}");
-                Console.WriteLine("========================================");
-                Console.WriteLine("1. Reservar\n2. Cancelar\n3. Ver Disponibilidad\n4. Reporte\n5. Salir");
-                Console.Write("Seleccione: ");
+                Console.WriteLine("\n--- SISTEMA RESTAURANTES SENATOR ---");
+                Console.WriteLine("1. Realizar Reservación");
+                Console.WriteLine("2. Eliminar Reserva");
+                Console.WriteLine("3. Ver Disponibilidad");
+                Console.WriteLine("4. Imprimir Reporte");
+                Console.WriteLine("5. Salir");
+                Console.Write("Seleccione una opción: ");
                 opcion = Console.ReadLine();
 
+                // Uso de switch case
                 switch (opcion)
                 {
-                    case "1": NuevaReserva(); break;
-                    case "2": Cancelar(); break;
-                    case "3": MostrarCupos(); break;
-                    case "4": VerReporte(); break;
+                    case "1": NuevaReserva(); 
+                    break;
+                    case "2": Eliminar(); 
+                    break;
+                    case "3": VerDisponibilidad(); 
+                    break;
+                    case "4": Reporte(); 
+                    break;
                 }
-            } while (opcion != "5");
+            } 
+            while (opcion != "5");
         }
 
         static void NuevaReserva()
         {
-            try
+            try // Manejo de Excepciones
             {
-                Console.Write("Nombre del Cliente: ");
-                string nombre = Console.ReadLine().Trim().ToUpper();
+                Console.Write("Nombre del cliente: ");
+                string nom = Console.ReadLine();
+                Console.Write("Cantidad de personas: ");
+                int cant = int.Parse(Console.ReadLine());
 
-                Console.WriteLine("Restaurante (1:Ember, 2:Zao, 3:Grappa, 4:Larimar):");
-                int rPos = int.Parse(Console.ReadLine())-1;
+                Console.WriteLine("Restaurantes: 1:Ember, 2:Zao, 3:Grappa, 4:Larimar");
+                int r = int.Parse(Console.ReadLine());
 
-                Console.WriteLine("Horario (1: 6-8PM, 2: 8-10PM):");
-                int hPos = int.Parse(Console.ReadLine())-1;
+                Console.WriteLine("Turnos: 1: 6:00 PM, 2: 8:00 PM");
+                int h = int.Parse(Console.ReadLine());
 
-                string res = Almacen.Restaurantes[rPos];
-                string hor = Almacen.Horarios[hPos];
-
-                if (Motor.ContarOcupados(res, hor) < Almacen.Capacidades[rPos])
+                if (Gestor.IntentarRegistrar(nom, cant, r, h))
                 {
-                    Almacen.NombresClientes.Add(nombre);
-                    Almacen.ResAsignados.Add(res);
-                    Almacen.HorasAsignadas.Add(hor);
-                    Almacen.FechasRegistro.Add(DateTime.Now);
-                    Console.WriteLine($"\nÉxito: {Motor.ObtenerPrimerNombre(nombre)} registrado a las {DateTime.Now:t}");
+                    Console.WriteLine("\n[OK] Reserva confirmada con éxito.");
                 }
-                else Console.WriteLine("\nSin cupo.");
+                else
+                {
+                    Console.WriteLine("\n[FULL] No hay cupo disponible en este turno.");
+                }
+                    
             }
-            catch (Exception) 
+            catch (Exception ex) 
             { 
-                Console.WriteLine("\nError: Use números para las opciones."); 
+                Console.WriteLine($"Error: {ex.Message}"); 
             }
         }
 
-        static void MostrarCupos()
+        static void VerDisponibilidad()
         {
-            Console.WriteLine("\n--- DISPONIBILIDAD ---");
+            Console.WriteLine("\n--- DISPONIBILIDAD ACTUAL ---");
             int i = 0;
-            while (i < Almacen.Restaurantes.Length)
+            while (i < Almacen.Restaurantes.Length) // Uso de while
             {
-                int c1 = Motor.ContarOcupados(Almacen.Restaurantes[i], Almacen.Horarios[0]);
-                int c2 = Motor.ContarOcupados(Almacen.Restaurantes[i], Almacen.Horarios[1]);
-                Console.WriteLine($"{Almacen.Restaurantes[i],-10} | 6PM: {Almacen.Capacidades[i]-c1} | 8PM: {Almacen.Capacidades[i]-c2}");
+                int c1 = Gestor.ContarOcupados(Almacen.Restaurantes[i], Almacen.Horarios[0]);
+                int c2 = Gestor.ContarOcupados(Almacen.Restaurantes[i], Almacen.Horarios[1]);
+                
+                Console.WriteLine($"{Almacen.Restaurantes[i],-10} | Turno A: {Almacen.Capacidades[i]-c1} libres | Turno B: {Almacen.Capacidades[i]-c2} libres");
                 i++;
             }
         }
 
-        static void VerReporte()
+        static void Reporte()
         {
-            Console.WriteLine("\n--- LISTADO ---");
-            foreach (string n in Almacen.NombresClientes)
+            Console.WriteLine("\n--- REPORTE DETALLADO ---");
+            // Uso de foreach
+            foreach (string nombre in Almacen.NombresClientes)
             {
-                int idx = Almacen.NombresClientes.IndexOf(n);
-                Console.WriteLine($"{idx+1}. {n,-20} | {Almacen.ResAsignados[idx]} | {Almacen.FechasRegistro[idx]:g}");
+                int idx = Almacen.NombresClientes.IndexOf(nombre);
+                Console.WriteLine($"{idx+1}. {nombre,-15} | {Almacen.ResAsignados[idx]} | {Almacen.FechasRegistro[idx]:g}");
             }
         }
 
-        static void Cancelar()
+        static void Eliminar()
         {
             Console.Write("Nombre a borrar: ");
-            if (Motor.Eliminar(Console.ReadLine())) Console.WriteLine("Borrado.");
-            else Console.WriteLine("No encontrado.");
+            if (Gestor.EliminarReserva(Console.ReadLine()))
+            {
+                Console.WriteLine("Borrado.");
+            }
+            else 
+            {
+                Console.WriteLine("No encontrado.");
+            }    
         }
     }
 }
