@@ -53,7 +53,10 @@ namespace SistemaSenator.Visual
                 }
                 else Console.WriteLine("\nSin cupo.");
             }
-            catch (Exception) { Console.WriteLine("\nError: Use números para las opciones."); }
+            catch (Exception) 
+            { 
+                Console.WriteLine("\nError: Use números para las opciones."); 
+            }
         }
 
         static void MostrarCupos()
